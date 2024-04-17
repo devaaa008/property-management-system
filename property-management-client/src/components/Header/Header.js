@@ -41,10 +41,20 @@ export const Header = () => {
           >
             View Customers
           </button>
-          <button className="header-button">View Bookings</button>
-          <button className="header-button">View Properties</button>
-          <button className="header-button">Rent</button>
-          <button className="header-button">Buy</button>
+          <button
+            className="header-button"
+            onClick={() => handleButtonCLick("/admin/viewBookings")}
+          >
+            View Bookings
+          </button>
+          <button
+            className="header-button"
+            onClick={() => handleButtonCLick("/admin/viewProperties")}
+          >
+            View Properties
+          </button>
+          <button className="header-button">Add Rent</button>
+          <button className="header-button">Add Buy</button>
           <button className="header-button" onClick={() => handleLogout()}>
             Logout
           </button>

@@ -6,6 +6,8 @@ import { useState, useEffect, useContext } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import { useAuth } from "./contexts/AuthContext";
+import { ViewPropertiesPage } from "./pages/ViewPropertiesPage";
+import { ViewBookingsPage } from "./pages/ViewBookings";
 
 function App() {
   const { adminLoggedIn, loggedIn } = useAuth();
@@ -31,6 +33,8 @@ const AdminRoutes = () => {
       <Routes>
         <Route path="/home" element={<AdminHomePage />} />
         <Route path="/viewCustomers" element={<ListCustomersPage />} />
+        <Route path="/viewProperties" element={<ViewPropertiesPage />} />
+        <Route path="/viewbookings" element={<ViewBookingsPage />} />
         {/* Add more protected routes as needed */}
       </Routes>
     </>
