@@ -1,6 +1,7 @@
 const Customer = require("../models/customer");
 
 const router = require("express").Router();
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -9,7 +10,7 @@ router.post("/login", async (req, res) => {
   }
   if (await authenticateCustomer(username, password)) {
     req.session.user = username;
-    return res.status(200).send("Customer authenticated");
+    return res.status(200).json({ message: "Customer authenticated" });
   }
   req.session.destroy();
   return res.status(401).send("Invalid credentials");
@@ -52,6 +53,10 @@ router.post("/register", async (req, res) => {
     throw err;
   }
   return res.status(201).send("Customer created");
+});
+
+router.post("/verify", authMiddleware, (req, res, next) => {
+  return res.status(200).json({ message: "Authenticated" });
 });
 
 const authenticateCustomer = async (username, password) => {

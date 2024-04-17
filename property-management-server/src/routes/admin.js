@@ -24,6 +24,10 @@ adminRouter.post("/logout", (req, res) => {
   res.status(200).send("Logged out");
 });
 
+adminRouter.post("/verify", adminAuthMiddleware, (req, res, next) => {
+  return res.status(200).json({ message: "Authenticated" });
+});
+
 adminRouter.use("/auth/*", adminAuthMiddleware);
 adminRouter.post("/auth/addProperty", async (req, res, next) => {
   const {
