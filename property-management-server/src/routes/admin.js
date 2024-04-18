@@ -38,6 +38,7 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
     propertyPrice,
     propertyArea,
     propertyOwner,
+    propertyMode,
   } = req.body;
   if (
     !propertyId ||
@@ -46,7 +47,8 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
     !propertyAddress ||
     !propertyPrice ||
     !propertyArea ||
-    !propertyOwner
+    !propertyOwner ||
+    !propertyMode
   ) {
     return res.status(400).send("All fields are required");
   }
@@ -64,6 +66,7 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
       propertyPrice: propertyPrice,
       propertyArea: propertyArea,
       propertyOwner: propertyOwner,
+      propertyMode: propertyMode,
     });
     await property.save();
   } catch (err) {

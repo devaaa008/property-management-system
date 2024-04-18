@@ -53,8 +53,18 @@ export const Header = () => {
           >
             View Properties
           </button>
-          <button className="header-button">Add Rent</button>
-          <button className="header-button">Add Buy</button>
+          <button
+            className="header-button"
+            onClick={() => handleButtonCLick("/admin/addRent")}
+          >
+            Add Rent
+          </button>
+          <button
+            className="header-button"
+            onClick={() => handleButtonCLick("/admin/addBuy")}
+          >
+            Add Buy
+          </button>
           <button className="header-button" onClick={() => handleLogout()}>
             Logout
           </button>

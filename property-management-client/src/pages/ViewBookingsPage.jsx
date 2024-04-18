@@ -13,7 +13,6 @@ export const ViewBookingsPage = () => {
             "Content-Type": "application/json",
           },
         });
-        console.log(response.data);
         setBookings(response.data);
       } catch (err) {
         console.log(err);

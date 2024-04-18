@@ -34,6 +34,12 @@ let propertySchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  propertyMode: {
+    type: String,
+    enum: ["rent", "buy"],
+    default: "buy", // Default value can be set as per your requirements
+    required: true,
+  },
 });
 
 let Property = (module.exports = mongoose.model(

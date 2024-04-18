@@ -2,12 +2,13 @@ import { LoginPage } from "./pages/LoginPage";
 import { AdminHomePage } from "./pages/AdminHomePage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ListCustomersPage } from "./pages/ListCustomersPage";
-import { useState, useEffect, useContext } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import { useAuth } from "./contexts/AuthContext";
 import { ViewPropertiesPage } from "./pages/ViewPropertiesPage";
-import { ViewBookingsPage } from "./pages/ViewBookings";
+import { ViewBookingsPage } from "./pages/ViewBookingsPage";
+import { AddRentPage } from "./pages/AddRentPage";
+import { AddBuyPage } from "./pages/AddBuyPage";
 
 function App() {
   const { adminLoggedIn, loggedIn } = useAuth();
@@ -35,6 +36,8 @@ const AdminRoutes = () => {
         <Route path="/viewCustomers" element={<ListCustomersPage />} />
         <Route path="/viewProperties" element={<ViewPropertiesPage />} />
         <Route path="/viewbookings" element={<ViewBookingsPage />} />
+        <Route path="/addRent" element={<AddRentPage />} />
+        <Route path="/addBuy" element={<AddBuyPage />} />
         {/* Add more protected routes as needed */}
       </Routes>
     </>
