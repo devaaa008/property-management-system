@@ -8,7 +8,7 @@ export const AdminHomePage = (props) => {
     <div className="grid-container">
       <Header />
       <aside className="left-panel">Left Panel</aside>
-      <main className="main-content">Hello Brother</main>
+      <main className="main-content">Hello Admin</main>
       <Footer />
     </div>
   );

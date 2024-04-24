@@ -25,7 +25,7 @@ generalRouter.get("/propertiesByArea/:area", async (req, res) => {
   if (!area) {
     return res.status(400).send("Area is required");
   }
-  const properties = await Property.find({ propertyArea: area });
+  const properties = await Property.find({ propertyArea: area.toLowerCase() });
   return res.json(properties);
 });
 

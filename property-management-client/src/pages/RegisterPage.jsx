@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import axiosInstance from "../models/axios";
 
@@ -108,66 +108,76 @@ export const RegisterPage = (props) => {
   };
 
   return (
-    <div className={"mainContainer"}>
+    <div className={"mainContainerRegister"}>
       <div className={"titleContainer"}>
         <div>Register</div>
       </div>
       <br />
       <div className={"inputContainer"}>
-        <label for="fname">First Name</label>
+        <label className="label" for="fname">
+          First Name
+        </label>
         <input
           value={fname}
-          placeholder="Enter your First Name here"
+          placeholder="Enter your First Name "
           onChange={(ev) => setFname(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="fname"
         />
         <label className="errorLabel">{fnameError}</label>
       </div>
       <br />
       <div className={"inputContainer"}>
-        <label for="lname">Last Name</label>
+        <label className="label" for="lname">
+          Last Name
+        </label>
         <input
           value={lname}
-          placeholder="Enter your Last Name here"
+          placeholder="Enter your Last Name "
           onChange={(ev) => setLname(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="lname"
         />
         <label className="errorLabel">{lnameError}</label>
       </div>
       <br />
       <div className={"inputContainer"}>
-        <label for="dob">DOB</label>
+        <label className="label" for="dob">
+          DOB
+        </label>
         <input
           value={dob}
           type="date"
           onChange={(ev) => setDob(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="dob"
         />
         <label className="errorLabel">{dobError}</label>
       </div>
       <br />
       <div className={"inputContainer"}>
-        <label for="phoneNumber">Phone Number</label>
+        <label className="label" for="phoneNumber">
+          Phone Number
+        </label>
         <input
           value={phoneNumber}
-          placeholder="Enter your Phone No here"
+          placeholder="Enter your Phone No "
           onChange={(ev) => setPhoneNumber(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="phoneNumber"
         />
         <label className="errorLabel">{phoneNumberError}</label>
       </div>
       <br />
       <div className={"inputContainer"}>
-        <label for="address">Address</label>
+        <label className="label" for="address">
+          Address
+        </label>
         <input
           value={address}
-          placeholder="Enter your Address here"
+          placeholder="Enter your Address "
           onChange={(ev) => setAddress(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="address"
         />
         <label className="errorLabel">{addressError}</label>
@@ -175,38 +185,44 @@ export const RegisterPage = (props) => {
       <br />
 
       <div className={"inputContainer"}>
-        <label for="username">Username</label>
+        <label className="label" for="username">
+          Username
+        </label>
         <input
           value={username}
-          placeholder="Enter your username here"
+          placeholder="Enter your username "
           onChange={(ev) => setUsername(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="username"
         />
         <label className="errorLabel">{usernameError}</label>
       </div>
       <br />
       <div className={"inputContainer"}>
-        <label for="password">Password</label>
+        <label className="label" for="password">
+          Password
+        </label>
         <input
           value={password}
           type="password"
-          placeholder="Enter your password here"
+          placeholder="Enter your password "
           onChange={(ev) => setPassword(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="password"
         />
         <label className="errorLabel">{passwordError}</label>
       </div>
       <br />
       <div className={"inputContainer"}>
-        <label for="confirmPassword">Confirm Password</label>
+        <label className="label" for="confirmPassword">
+          Confirm Password
+        </label>
         <input
           value={confirmPassword}
           type="password"
-          placeholder="Enter your password here"
+          placeholder="Enter your password "
           onChange={(ev) => setConfirmPassword(ev.target.value)}
-          className={"inputBox"}
+          className={"inputBoxRegister"}
           name="confirmPassword"
         />
         <label className="errorLabel">{confirmPasswordError}</label>
@@ -215,11 +231,22 @@ export const RegisterPage = (props) => {
       <div className={"inputContainer"}>
         <input
           className={"inputButton"}
+          style={{
+            backgroundColor: "green",
+            color: "white",
+            borderColor: "green",
+            borderRadius: "10px",
+            borderWidth: "2px",
+            borderStyle: "solid",
+          }}
           type="button"
           onClick={onButtonClick}
           value={"Submit"}
         />
       </div>
+      <p>
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
     </div>
   );
 };

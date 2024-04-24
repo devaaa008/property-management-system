@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 // import axios from "axios";
 export const LoginPage = (props) => {
@@ -69,12 +69,25 @@ export const LoginPage = (props) => {
       <br />
       <div className={"inputContainer"}>
         <input
-          className={"inputButton"}
+          className=""
+          style={{
+            backgroundColor: "green",
+            color: "white",
+            borderColor: "green",
+            borderRadius: "10px",
+            borderWidth: "2px",
+            borderStyle: "solid", // Ensure a solid border style
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          }}
           type="button"
           onClick={onButtonClick}
           value={"Log in"}
         />
+        {/* <a>Don't have an account Register</a> */}
       </div>
+      <p>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
     </div>
   );
 };

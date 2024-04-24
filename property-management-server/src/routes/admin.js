@@ -64,7 +64,7 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
       propertyStatus: "available",
       propertyAddress: propertyAddress,
       propertyPrice: propertyPrice,
-      propertyArea: propertyArea,
+      propertyArea: propertyArea.toLowerCase(),
       propertyOwner: propertyOwner,
       propertyMode: propertyMode,
     });
