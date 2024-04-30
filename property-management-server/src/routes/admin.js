@@ -6,6 +6,25 @@ const Booking = require("../models/booking");
 
 const adminRouter = require("express").Router();
 
+const path = require("path");
+
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + Date.now() + ext); // File naming convention
+  },
+  onError: function (err, next) {
+    console.error("Upload error:", err);
+    next(err);
+  },
+});
+
+const upload = multer({ storage: storage });
 adminRouter.post("/login", async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -29,6 +48,20 @@ adminRouter.post("/verify", adminAuthMiddleware, (req, res, next) => {
 });
 
 adminRouter.use("/auth/*", adminAuthMiddleware);
+
+adminRouter.post(
+  "/auth/upload/image",
+  upload.single("file"),
+  (req, res, next) => {
+    const imageFile = req.file;
+    if (!!imageFile) res.status(400);
+    res.status(200).json({
+      message: "Property details and image uploaded successfully",
+      image: imageFile,
+    });
+  }
+);
+
 adminRouter.post("/auth/addProperty", async (req, res, next) => {
   const {
     propertyId,
@@ -39,7 +72,9 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
     propertyArea,
     propertyOwner,
     propertyMode,
+    imagePath,
   } = req.body;
+
   if (
     !propertyId ||
     !propertyName ||
@@ -48,7 +83,8 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
     !propertyPrice ||
     !propertyArea ||
     !propertyOwner ||
-    !propertyMode
+    !propertyMode ||
+    !imagePath
   ) {
     return res.status(400).send("All fields are required");
   }
@@ -56,6 +92,11 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
   if (await isPropertyIdExists(propertyId)) {
     return res.status(400).send("Property ID already exists");
   }
+
+  if (req.fileValidationError) {
+    return res.status(400).send(req.fileValidationError);
+  }
+
   try {
     const property = new Property({
       propertyId: propertyId,
@@ -67,6 +108,7 @@ adminRouter.post("/auth/addProperty", async (req, res, next) => {
       propertyArea: propertyArea.toLowerCase(),
       propertyOwner: propertyOwner,
       propertyMode: propertyMode,
+      imagePath: imagePath,
     });
     await property.save();
   } catch (err) {

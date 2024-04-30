@@ -2,6 +2,7 @@ const generalRouter = require("express").Router();
 const mongoose = require("mongoose");
 const Property = require("../models/property");
 const Booking = require("../models/booking");
+const fs = require("fs");
 
 generalRouter.get("/properties", async (req, res) => {
   const properties = await Property.find();
@@ -68,5 +69,19 @@ generalRouter.post("/bookProperty/:id", async (req, res) => {
     throw error;
   }
   return res.status(201).send("Property booked successfully");
+});
+
+generalRouter.get("/download/image/", (req, res, next) => {
+  const imagePath = req.body.imagePath;
+  if (fs.existsSync(imagePath)) {
+    // Set the appropriate Content-Type header
+    res.setHeader("Content-Type", "image/jpeg");
+
+    // Read the image file and send it in the response
+    const fileStream = fs.createReadStream(imagePath);
+    fileStream.pipe(res);
+  } else {
+    res.status(404).send("Image not found");
+  }
 });
 module.exports = generalRouter;

@@ -40,6 +40,10 @@ let propertySchema = mongoose.Schema({
     default: "buy", // Default value can be set as per your requirements
     required: true,
   },
+  imagePath: {
+    type: String,
+    required: true,
+  },
 });
 
 let Property = (module.exports = mongoose.model(
