@@ -32,9 +32,10 @@ export const LoginPage = (props) => {
     async function loggingIn() {
       const response = await logIn(username, password);
       if (response && username === "admin") {
+        localStorage.setItem("loginUser", "admin");
         navigate("/admin/home");
       } else if (response) {
-        navigate("/customer/home");
+        navigate("/general/home");
       }
     }
     loggingIn();

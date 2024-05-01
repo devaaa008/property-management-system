@@ -11,18 +11,18 @@ export const CustomerHomePage = (props) => {
   return (
     <div className="grid-container">
       <CustomerHeader />
-      <aside className="left-panel">Left Panel</aside>
+      {/* <aside className="left-panel"></aside> */}
       <main className="main-content">
         <button
           className="header-button"
-          onClick={() => handleButtonCLick("/customer/rentPropertyListings")}
+          onClick={() => handleButtonCLick("/general/rentPropertyListings")}
         >
           Rent Property
         </button>
         <br />
         <button
           className="header-button"
-          onClick={() => handleButtonCLick("/customer/buyPropertyListings")}
+          onClick={() => handleButtonCLick("/general/buyPropertyListings")}
         >
           Buy Property
         </button>

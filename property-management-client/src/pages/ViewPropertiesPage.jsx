@@ -2,9 +2,12 @@ import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { useEffect, useState } from "react";
 import axiosInstance from "../models/axios";
+import { useNavigate } from "react-router-dom";
 
 export const ViewPropertiesPage = () => {
   const [properties, setProperties] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -25,7 +28,7 @@ export const ViewPropertiesPage = () => {
   return (
     <div className="grid-container">
       <Header />
-      <aside className="left-panel">Left Panel</aside>
+      {/* <aside className="left-panel"></aside> */}
       <main className="main-content">
         <table>
           <thead>
@@ -38,6 +41,7 @@ export const ViewPropertiesPage = () => {
               <th>Owner</th>
               <th>Price</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +55,19 @@ export const ViewPropertiesPage = () => {
                 <td>{property.propertyOwner}</td>
                 <td>{property.propertyPrice}</td>
                 <td>{property.propertyStatus}</td>
+                <td>
+                  {property.propertyStatus && (
+                    <button
+                      onClick={() =>
+                        navigate(
+                          `/general/property/view/${property.propertyId}`
+                        )
+                      }
+                    >
+                      View Property
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

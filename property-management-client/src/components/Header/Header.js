@@ -18,6 +18,7 @@ export const Header = () => {
           },
         }
       );
+      localStorage.clear();
     } catch (err) {
       console.log(err);
     }

@@ -11,37 +11,40 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     async function verifyUser() {
       // verify it with the auth server to see if it is valid
-      try {
-        const resp = await axiosInstance.post(
-          "/admin/verify",
-          {},
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        setAdminLoggedIn(true);
-        return;
-      } catch (err) {
-        setAdminLoggedIn(false);
-      }
-
-      try {
-        const resp = await axiosInstance.post(
-          "/customer/verify",
-          {},
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        setLoggedIn(true);
-      } catch (err) {
-        setLoggedIn(false);
+      let loginUser = localStorage.getItem("loginUser");
+      if (localStorage.getItem("loginUser") == "admin") {
+        try {
+          const resp = await axiosInstance.post(
+            "/admin/verify",
+            {},
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setAdminLoggedIn(true);
+          return;
+        } catch (err) {
+          setAdminLoggedIn(false);
+        }
+      } else {
+        try {
+          const resp = await axiosInstance.post(
+            "/customer/verify",
+            {},
+            {
+              withCredentials: true,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          setLoggedIn(true);
+        } catch (err) {
+          setLoggedIn(false);
+        }
       }
     }
     verifyUser();

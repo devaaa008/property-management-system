@@ -26,7 +26,7 @@ function App() {
           />
           <Route path="/register" element={<RegisterPage />} />
           <Route
-            path="/customer/*"
+            path="/general/*"
             element={loggedIn ? <CustomerRoutes /> : <Navigate to="/login" />}
           />
         </Routes>

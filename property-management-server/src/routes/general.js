@@ -9,6 +9,24 @@ generalRouter.get("/properties", async (req, res) => {
   return res.json(properties);
 });
 
+generalRouter.get("/propertiesForBuy", async (req, res) => {
+  const properties = await Property.find();
+  return res.json(
+    properties.filter(
+      (property) => property.propertyMode.toLowerCase() == "buy"
+    )
+  );
+});
+
+generalRouter.get("/propertiesForRent", async (req, res) => {
+  const properties = await Property.find();
+  return res.json(
+    properties.filter(
+      (property) => property.propertyMode.toLowerCase() == "rent"
+    )
+  );
+});
+
 generalRouter.get("/property/:id", async (req, res) => {
   const propertyId = req.params.id;
   if (!propertyId) {
@@ -72,7 +90,7 @@ generalRouter.post("/bookProperty/:id", async (req, res) => {
 });
 
 generalRouter.get("/download/image/", (req, res, next) => {
-  const imagePath = req.body.imagePath;
+  const { imagePath } = req.query;
   if (fs.existsSync(imagePath)) {
     // Set the appropriate Content-Type header
     res.setHeader("Content-Type", "image/jpeg");
