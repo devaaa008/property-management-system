@@ -23,7 +23,7 @@ export const ViewBookingsPage = () => {
   return (
     <div className="grid-container">
       <Header />
-      <aside className="left-panel">Left Panel</aside>
+      {/* <aside className="left-panel"></aside> */}
       <main className="main-content">
         <table>
           <thead>

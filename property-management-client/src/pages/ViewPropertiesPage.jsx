@@ -2,9 +2,12 @@ import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { useEffect, useState } from "react";
 import axiosInstance from "../models/axios";
+import { useNavigate } from "react-router-dom";
 
 export const ViewPropertiesPage = () => {
   const [properties, setProperties] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProperties = async () => {
       try {
@@ -25,7 +28,7 @@ export const ViewPropertiesPage = () => {
   return (
     <div className="grid-container">
       <Header />
-      <aside className="left-panel">Left Panel</aside>
+      {/* <aside className="left-panel"></aside> */}
       <main className="main-content">
         <table>
           <thead>

@@ -3,6 +3,7 @@ import { Footer } from "../components/Footer/Footer";
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../models/axios";
 import { useNavigate } from "react-router-dom";
+
 export const PropertyListingsPage = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [properties, setProperties] = useState([]);
@@ -12,19 +13,17 @@ export const PropertyListingsPage = (props) => {
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
     localStorage.setItem("searchTerm", event.target.value);
-    // Pass the search term to the parent component for filtering
-    // props.onSearch(event.target.value);
   };
 
-  const handleSubmit = () => {
-    const fetchPropertyByArea = async () => {
-      if (searchTerm === "") {
-        alert("Please enter area to search for properties");
-        return;
-      }
+  useEffect(() => {
+    // setSearchTerm(localStorage.getItem("searchTerm") || "");
+    // setProperties(JSON.parse(localStorage.getItem("properties")) || []);
+    const loadProperties = async () => {
       try {
         const response = await axiosInstance.get(
-          `/auth/propertiesByArea/${searchTerm.toLowerCase()}`,
+          `/auth/${
+            props.mode == "rent" ? "propertiesForRent" : "propertiesForBuy"
+          }`,
           {
             withCredentials: true,
             headers: {
@@ -33,35 +32,48 @@ export const PropertyListingsPage = (props) => {
           }
         );
 
-        setProperties(
-          response.data.filter(
-            (property) => property.propertyMode === props.mode
-          )
+        const propertiesWithImages = await Promise.all(
+          response.data.map(async (property) => {
+            const imageResponse = await axiosInstance.get(
+              `auth/download/image?imagePath=${property.imagePath}`,
+              {
+                responseType: "blob",
+                withCredentials: true,
+              }
+            );
+            const imageUrl = URL.createObjectURL(imageResponse.data);
+            return { ...property, imageUrl };
+          })
         );
-        // setFilteredProperties()
-        localStorage.setItem("properties", JSON.stringify(response.data));
+
+        setProperties(propertiesWithImages);
+        setFilteredProperties(propertiesWithImages);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchPropertyByArea();
+    loadProperties();
+  }, []);
+
+  const handleSubmit = async () => {
+    if (searchTerm === "") {
+      alert("Please enter area to search for properties");
+      return;
+    }
+    setFilteredProperties(
+      properties.filter((property) => property.propertyArea === searchTerm)
+    );
   };
 
-  useEffect(() => {
-    console.log("Local", localStorage.getItem("properties"));
-    // Set filteredProperties when properties or searchTerm changes
-    setSearchTerm(localStorage.getItem("searchTerm") || "");
-    setProperties(JSON.parse(localStorage.getItem("properties")) || []);
-  }, []);
   return (
     <div className="grid-container">
       <CustomerHeader />
-      <aside className="left-panel">Left Panel</aside>
+      {/* <aside className="left-panel"></aside> */}
       <main className="main-content">
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search By Area"
+            placeholder="Filter By Area"
             value={searchTerm}
             onChange={handleChange}
             className="search-input"
@@ -71,25 +83,46 @@ export const PropertyListingsPage = (props) => {
           </button>
         </div>
         <div className="properties">
-          {properties.map((property) => (
-            <div className="property" key={property.propertyId}>
-              {/* <img src={property.propertyImage} alt="property" /> */}
-              <h3>{(property.propertyName, property.propertyId)}</h3>
-              <p>{property.propertyArea}</p>
-              {/* <p>{property.propertyPrice}</p>
-              <p>{property.propertyType}</p> */}
-              <p>{property.propertyStatus}</p>
-              {property.propertyStatus && (
-                <button
-                  onClick={() =>
-                    navigate(`/customer/property/view/${property.propertyId}`)
-                  }
-                >
-                  View Property
-                </button>
-              )}
-            </div>
-          ))}
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Area</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProperties.map((property) => (
+                <tr key={property.propertyId}>
+                  <td>
+                    <img
+                      src={property.imageUrl}
+                      style={{ height: "100px", width: "auto" }}
+                      alt="property"
+                    />
+                  </td>
+                  <td>{property.propertyName}</td>
+                  <td>{property.propertyArea}</td>
+                  <td>{property.propertyStatus}</td>
+                  <td>
+                    {property.propertyStatus && (
+                      <button
+                        onClick={() =>
+                          navigate(
+                            `/general/property/view/${property.propertyId}`
+                          )
+                        }
+                      >
+                        View Property
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </main>
       <Footer />

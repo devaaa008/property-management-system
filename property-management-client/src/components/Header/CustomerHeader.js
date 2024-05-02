@@ -9,7 +9,7 @@ export const CustomerHeader = () => {
   const handleLogout = async () => {
     try {
       const response = await axiosInstance.post(
-        "/customer/logout",
+        "/general/logout",
         {},
         {
           withCredentials: true,
@@ -29,7 +29,7 @@ export const CustomerHeader = () => {
         <div>
           <button
             className="header-button"
-            onClick={() => handleButtonCLick("/customer/home")}
+            onClick={() => handleButtonCLick("/general/home")}
           >
             Home
           </button>

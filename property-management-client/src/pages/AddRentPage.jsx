@@ -20,12 +20,28 @@ export const AddRentPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(propertyDetails);
     e.preventDefault();
+
+    const propertyImage = document.getElementById("propertyImage").files[0];
+
+    const formData = new FormData();
+    formData.append("file", propertyImage, propertyImage.name);
     try {
+      const responseUpload = await axiosInstance.post(
+        "admin/auth/upload/image",
+        formData,
+        {
+          headers: {
+            "Content-Type": 'multipart/form-data; boundary="MyBoundary"',
+          },
+        }
+      );
+      let imagePath = responseUpload.data.image.path;
+      const details = { ...propertyDetails, imagePath };
+
       const response = await axiosInstance.post(
         "/admin/auth/addProperty",
-        propertyDetails,
+        details,
         {
           withCredentials: true,
           headers: {
@@ -45,90 +61,128 @@ export const AddRentPage = () => {
   return (
     <div className="grid-container">
       <Header />
-      <aside className="left-panel">Left Panel</aside>
+      <aside className="left-panel"></aside>
       <main className="main-content">
-        <div>
-          <h2>Insert Property Details</h2>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Property ID:
-              <input
-                type="text"
-                name="propertyId"
-                value={propertyDetails.propertyId}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <br />
-            <label>
-              Property Name:
-              <input
-                type="text"
-                name="propertyName"
-                value={propertyDetails.propertyName}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <br />
-            <label>
-              Property Type:
-              <input
-                type="text"
-                name="propertyType"
-                value={propertyDetails.propertyType}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <br />
-            <label>
-              Property Address:
-              <input
-                type="text"
-                name="propertyAddress"
-                value={propertyDetails.propertyAddress}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <br />
-            <label>
-              Property Price:
-              <input
-                type="text"
-                name="propertyPrice"
-                value={propertyDetails.propertyPrice}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <br />
-            <label>
-              Property Area:
-              <input
-                type="text"
-                name="propertyArea"
-                value={propertyDetails.propertyArea}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <br />
-            <label>
-              Property Owner:
-              <input
-                type="text"
-                name="propertyOwner"
-                value={propertyDetails.propertyOwner}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <br />
-            <button type="submit">Submit</button>
-          </form>
+        <div
+          style={{
+            // backgroundColor: "grey",
+            display: "flex",
+            width: "100%",
+            height: "100%",
+            flexDirection: "column",
+            alignItems: "center",
+            alignSelf: "center",
+            justifyContent: "center",
+          }}
+        >
+          <h2 className="Header">Insert Property Details</h2>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              height: "100%",
+              // backgroundColor: "red",
+              justifyContent: "center",
+
+              alignItems: "center",
+            }}
+          >
+            <form onSubmit={handleSubmit}>
+              <label>
+                Property ID:
+                <br />
+                <input
+                  className="inputBox"
+                  type="text"
+                  name="propertyId"
+                  value={propertyDetails.propertyId}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Property Name:
+                <input
+                  className="inputBox"
+                  type="text"
+                  name="propertyName"
+                  value={propertyDetails.propertyName}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Property Type:
+                <input
+                  className="inputBox"
+                  type="text"
+                  name="propertyType"
+                  value={propertyDetails.propertyType}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Property Address:
+                <input
+                  className="inputBox"
+                  type="text"
+                  name="propertyAddress"
+                  value={propertyDetails.propertyAddress}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Property Price:
+                <input
+                  className="inputBox"
+                  type="text"
+                  name="propertyPrice"
+                  value={propertyDetails.propertyPrice}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Property Area:
+                <input
+                  className="inputBox"
+                  type="text"
+                  name="propertyArea"
+                  value={propertyDetails.propertyArea}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Property Owner:
+                <input
+                  className="inputBox"
+                  type="text"
+                  name="propertyOwner"
+                  value={propertyDetails.propertyOwner}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Property Image:
+                <input type="file" id="propertyImage" name="image"></input>
+              </label>
+              <br />
+              <button type="submit">Submit</button>
+            </form>
+          </div>
         </div>
       </main>
       <Footer />

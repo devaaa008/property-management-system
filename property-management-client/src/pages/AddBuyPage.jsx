@@ -21,12 +21,26 @@ export const AddBuyPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(propertyDetails);
-    e.preventDefault();
+    const propertyImage = document.getElementById("propertyImage").files[0];
+
+    const formData = new FormData();
+    formData.append("file", propertyImage, propertyImage.name);
     try {
+      const responseUpload = await axiosInstance.post(
+        "admin/auth/upload/image",
+        formData,
+        {
+          headers: {
+            "Content-Type": 'multipart/form-data; boundary="MyBoundary"',
+          },
+        }
+      );
+      let imagePath = responseUpload.data.image.path;
+      const details = { ...propertyDetails, imagePath };
+
       const response = await axiosInstance.post(
         "/admin/auth/addProperty",
-        propertyDetails,
+        details,
         {
           withCredentials: true,
           headers: {
@@ -46,7 +60,7 @@ export const AddBuyPage = () => {
   return (
     <div className="grid-container">
       <Header />
-      <aside className="left-panel">Left Panel</aside>
+      <aside className="left-panel"></aside>
       <main className="main-content">
         <div
           style={{
@@ -68,7 +82,7 @@ export const AddBuyPage = () => {
               flexDirection: "row",
               width: "100%",
               height: "100%",
-              backgroundColor: "red",
+              // backgroundColor: "red",
               justifyContent: "center",
 
               alignItems: "center",
@@ -158,6 +172,11 @@ export const AddBuyPage = () => {
                   onChange={handleChange}
                   required
                 />
+              </label>
+              <br />
+              <label>
+                Property Image:
+                <input type="file" id="propertyImage" name="image"></input>
               </label>
               <br />
               <button type="submit">Submit</button>
