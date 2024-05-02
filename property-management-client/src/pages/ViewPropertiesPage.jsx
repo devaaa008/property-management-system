@@ -41,7 +41,6 @@ export const ViewPropertiesPage = () => {
               <th>Owner</th>
               <th>Price</th>
               <th>Status</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -55,19 +54,6 @@ export const ViewPropertiesPage = () => {
                 <td>{property.propertyOwner}</td>
                 <td>{property.propertyPrice}</td>
                 <td>{property.propertyStatus}</td>
-                <td>
-                  {property.propertyStatus && (
-                    <button
-                      onClick={() =>
-                        navigate(
-                          `/general/property/view/${property.propertyId}`
-                        )
-                      }
-                    >
-                      View Property
-                    </button>
-                  )}
-                </td>
               </tr>
             ))}
           </tbody>
