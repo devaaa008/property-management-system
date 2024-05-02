@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
           setAdminLoggedIn(true);
           return;
         } catch (err) {
+          localStorage.removeItem("loginUser");
           setAdminLoggedIn(false);
         }
       } else {
@@ -43,6 +44,7 @@ const AuthProvider = ({ children }) => {
           );
           setLoggedIn(true);
         } catch (err) {
+          localStorage.removeItem("loginUser");
           setLoggedIn(false);
         }
       }

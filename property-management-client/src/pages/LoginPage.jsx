@@ -35,6 +35,7 @@ export const LoginPage = (props) => {
         localStorage.setItem("loginUser", "admin");
         navigate("/admin/home");
       } else if (response) {
+        localStorage.setItem("loginUser", "customer");
         navigate("/general/home");
       }
     }
