@@ -25,7 +25,7 @@ const generalRouter = require("./routes/general");
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  "mongodb+srv://devaaa008:Devu0380@myatlasclusteredu.m9xukns.mongodb.net/PropertyManagement?retryWrites=true&w=majority",
+  `mongodb+srv://rojakrishna1998:Roja1998@cluster0.tr4r6zj.mongodb.net/Propertymanagement?retryWrites=true&w=majority&appName=Cluster0`,
   { useUnifiedTopology: true, useNewUrlParser: true }
 );
 var db = mongoose.connection;

@@ -30,6 +30,9 @@ generalRouter.get("/propertiesForRent", async (req, res) => {
 generalRouter.get("/propertyUserBooked", async (req, res) => {
   const username = req.session?.user;
   const bookings = await Booking.findOne({ username });
+  if (!bookings) {
+    return res.status(404).json({ message: "Not Found" });
+  }
   const { propertyId, bookingDate } = bookings;
   const property = await Property.findOne({ propertyId: propertyId });
   if (!property) {
