@@ -19,6 +19,7 @@ import { CustomerHomePage } from "./pages/CustomerHomePage";
 import { PropertyListingsPage } from "./pages/PropertyListingsPage";
 import { ViewPropertyDetail } from "./pages/ViewPropertyDetail";
 import { useEffect } from "react";
+import { ViewCustomerBookings } from "./pages/ViewCustomerBookings";
 
 function App() {
   const { adminLoggedIn, loggedIn } = useAuth();
@@ -77,6 +78,10 @@ const CustomerRoutes = () => {
           path="/property/view/:propertyId"
           element={<ViewPropertyDetail />}
         />
+        <Route
+          path="propertyUserBooked"
+          element={<ViewCustomerBookings />}
+        ></Route>
       </Routes>
     </>
   );

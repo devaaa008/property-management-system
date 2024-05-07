@@ -5,23 +5,20 @@ import axiosInstance from "../models/axios";
 import { useParams } from "react-router-dom";
 import "./ViewPropertyDetail.css"; // Import your custom CSS file
 
-export const ViewPropertyDetail = () => {
+export const ViewCustomerBookings = () => {
   const [property, setProperty] = useState({});
   const [imageUrl, setImageUrl] = useState("");
   const params = useParams();
 
   useEffect(() => {
-    const fetchProperty = async () => {
+    const fetchPropertyDetails = async () => {
       try {
-        const response = await axiosInstance.get(
-          `/auth/property/${params.propertyId}`,
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axiosInstance.get(`/auth/propertyUserBooked`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         setProperty(response.data);
 
         // Fetch image for the property
@@ -37,30 +34,8 @@ export const ViewPropertyDetail = () => {
         console.log(err);
       }
     };
-    fetchProperty();
+    fetchPropertyDetails();
   }, [params.propertyId]);
-
-  const handleBookButton = async () => {
-    try {
-      const response = await axiosInstance.post(
-        `/auth/bookProperty/${property.propertyId}`,
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      window.location.reload();
-      alert("Property booked successfully");
-    } catch (err) {
-      if (err.response.status === 403) {
-        alert("Multiple bookings not allowed");
-      }
-      console.log("hii error is", err.response);
-    }
-  };
 
   return (
     <div className="grid-container">
@@ -114,12 +89,6 @@ export const ViewPropertyDetail = () => {
                   {property.propertyAddress}
                 </span>
               </div>
-              {property.propertyStatus === "available" &&
-                localStorage.getItem("loginUser") !== "admin" && (
-                  <button className="book-button" onClick={handleBookButton}>
-                    Book
-                  </button>
-                )}
             </div>
           </div>
         )}

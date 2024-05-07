@@ -27,6 +27,18 @@ generalRouter.get("/propertiesForRent", async (req, res) => {
   );
 });
 
+generalRouter.get("/propertyUserBooked", async (req, res) => {
+  const username = req.session?.user;
+  const bookings = await Booking.findOne({ username });
+  const { propertyId, bookingDate } = bookings;
+  const property = await Property.findOne({ propertyId: propertyId });
+  if (!property) {
+    return res.status(404).send("Property not found");
+  }
+  const bookingDetail = { username, ...property.toObject(), bookingDate };
+  return res.json(bookingDetail);
+});
+
 generalRouter.get("/property/:id", async (req, res) => {
   const propertyId = req.params.id;
   if (!propertyId) {
@@ -57,6 +69,10 @@ generalRouter.post("/bookProperty/:id", async (req, res) => {
 
   if (username == "admin") {
     return res.status(400).send("Admin cannot book property");
+  }
+  const bookedProperty = await Booking.findOne({ username });
+  if (bookedProperty) {
+    return res.status(403).json({ message: "Multiple bookings not allowed" });
   }
   const session = await mongoose.startSession();
   session.startTransaction();

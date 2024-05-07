@@ -35,6 +35,12 @@ export const CustomerHeader = () => {
           </button>
         </div>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button
+            className="header-button"
+            onClick={() => handleButtonCLick("/general/propertyUserBooked")}
+          >
+            View Bookings
+          </button>
           <button className="header-button" onClick={() => handleLogout()}>
             Logout
           </button>

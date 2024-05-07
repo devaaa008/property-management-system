@@ -34,18 +34,22 @@ export const PropertyListingsPage = (props) => {
 
         const propertiesWithImages = await Promise.all(
           response.data.map(async (property) => {
-            const imageResponse = await axiosInstance.get(
-              `auth/download/image?imagePath=${property.imagePath}`,
-              {
-                responseType: "blob",
-                withCredentials: true,
-              }
-            );
-            const imageUrl = URL.createObjectURL(imageResponse.data);
-            return { ...property, imageUrl };
+            try {
+              const imageResponse = await axiosInstance.get(
+                `auth/download/image?imagePath=${property.imagePath}`,
+                {
+                  responseType: "blob",
+                  withCredentials: true,
+                }
+              );
+              const imageUrl = URL.createObjectURL(imageResponse.data);
+              return { ...property, imageUrl };
+            } catch (error) {
+              return null;
+            }
           })
         );
-
+        console.log(propertiesWithImages);
         setProperties(propertiesWithImages);
         setFilteredProperties(propertiesWithImages);
       } catch (err) {
@@ -94,33 +98,36 @@ export const PropertyListingsPage = (props) => {
               </tr>
             </thead>
             <tbody>
-              {filteredProperties.map((property) => (
-                <tr key={property.propertyId}>
-                  <td>
-                    <img
-                      src={property.imageUrl}
-                      style={{ height: "100px", width: "auto" }}
-                      alt="property"
-                    />
-                  </td>
-                  <td>{property.propertyName}</td>
-                  <td>{property.propertyArea}</td>
-                  <td>{property.propertyStatus}</td>
-                  <td>
-                    {property.propertyStatus && (
-                      <button
-                        onClick={() =>
-                          navigate(
-                            `/general/property/view/${property.propertyId}`
-                          )
-                        }
-                      >
-                        View Property
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {filteredProperties.map(
+                (property) =>
+                  property !== null && (
+                    <tr key={property.propertyId}>
+                      <td>
+                        <img
+                          src={property.imageUrl}
+                          style={{ height: "100px", width: "auto" }}
+                          alt="property"
+                        />
+                      </td>
+                      <td>{property.propertyName}</td>
+                      <td>{property.propertyArea}</td>
+                      <td>{property.propertyStatus}</td>
+                      <td>
+                        {property.propertyStatus && (
+                          <button
+                            onClick={() =>
+                              navigate(
+                                `/general/property/view/${property.propertyId}`
+                              )
+                            }
+                          >
+                            View Property
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  )
+              )}
             </tbody>
           </table>
         </div>
